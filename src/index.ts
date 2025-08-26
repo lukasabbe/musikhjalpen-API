@@ -52,7 +52,7 @@ app.get('/api/collection/:id', async (req, res) => {
         )
     ).json()) as Amount
 
-    res.json({
+    return res.json({
         collectionId: contentfulFundraiser.contentful_id,
         title: contentfulFundraiser.title,
         path: contentfulFundraiser.path,
