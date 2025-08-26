@@ -30,6 +30,11 @@ app.get('/api/collection/:id', async (req, res) => {
         return
     }
 
+    // Validate `id` to allow only letters, numbers, dashes, and underscores (adjust as needed)
+    if (!/^[a-zA-Z0-9_-]+$/.test(req.params.id)) {
+        return res.status(400).json({ error: 'Invalid collection ID' });
+    }
+
     const data = await fetch(`${HEAD_LINK}/page-data/${req.params.id}/page-data.json`)
 
 
