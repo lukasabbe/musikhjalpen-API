@@ -33,3 +33,13 @@ export interface Amount {
   amount: number
   prev_amount?: number
 }
+
+
+export interface Donator {
+  amount: number
+  hidden_amount: boolean
+  public: boolean
+  name: string
+  message: string
+  timestamp: string
+}

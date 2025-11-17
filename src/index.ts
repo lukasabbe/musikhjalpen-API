@@ -1,7 +1,7 @@
 import express, { json } from 'express'
 import cors from 'cors'
 import { rateLimit } from 'express-rate-limit'
-import { Amount, CollectionData } from './types'
+import { Amount, CollectionData, Donator } from './types'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -24,7 +24,6 @@ const HEAD_LINK = 'https://bossan.musikhjalpen.se'
 const PORT = process.env.PORT || 3000
 
 app.get('/api/collection/:id', async (req, res) => {
-
     if(req.params.id == "favicon.ico"){
         res.status(204).end()
         return
@@ -57,6 +56,10 @@ app.get('/api/collection/:id', async (req, res) => {
         )
     ).json()) as Amount
 
+    const dontaros = (await (
+        await fetch(`https://musikhjalpen-franceska.herokuapp.com/server/fundraisers/donations/${contentfulFundraiser.contentful_id}/0`)
+    ).json()) as Donator[];
+
     return res.json({
         collectionId: contentfulFundraiser.contentful_id,
         title: contentfulFundraiser.title,
@@ -71,7 +74,8 @@ app.get('/api/collection/:id', async (req, res) => {
         createdAt: contentfulFundraiser.createdAt,
         image: contentfulFundraiser.image.url,
         amount: amount.amount,
-        prev_amount: amount.prev_amount
+        prev_amount: amount.prev_amount,
+        donators: dontaros
     })
 })
 
